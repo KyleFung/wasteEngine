@@ -4,6 +4,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <Mesh.h>
+#include <LoadedMesh.h>
+#include <GeneratedMesh.h>
 #include <Shader.h>
 #include <Technique.h>
 
@@ -13,7 +15,7 @@
 #define WINDOW_WIDTH  640 
 #define WINDOW_HEIGHT 480
 
-Mesh mesh;
+GeneratedMesh mesh;
 
 Camera* eye = NULL;
 Technique tech;
@@ -60,6 +62,11 @@ static void specialHandler(unsigned char key, int x, int y)
     }
 }
 
+float func(float x, float y)
+{
+    return sin(x + y);
+}
+
 int main(int argc, char **argv)
 {
     //Initialize glut
@@ -95,8 +102,9 @@ int main(int argc, char **argv)
     pipeline.setCamera(eye);
 
     //Load scene
-    mesh = Mesh();
-    mesh.loadSceneFromFiles("Assets/Dragon/Dargon posing.obj");
+    mesh = GeneratedMesh();
+    mesh.loadMeshFromFunction(func);
+    mesh.loadTexture("Assets/tile.png");
 
     //Start loop
     glutMainLoop();
