@@ -21,24 +21,24 @@ bool GeneratedMesh::generateMesh()
             Vertex vert;
 
             float x = j * 0.01f;
-            float y = i * 0.01f;
-            float z = mFunction(x, y);
+            float y = mFunction(x, y);
+            float z = i * 0.01f;
 
             vert.pos = glm::vec3(x, y, z);
             vert.nor = glm::vec3(0.0f, 1.0f, 0.0f);
-            vert.tex = glm::vec3(x, y, 0.0f);
+            vert.tex = glm::vec3(x, z, 0.0f);
             heightMap.push_back(vert);
 
             //Push the square to the top right of the vertex
-            if (j != 99 && i != 99)
+            if (j != 99 && i != 99 && i != 0 && j != 0)
             {
                 unsigned int vertIndex = i * 100 + j;
-                indices.push_back(vertIndex);
+                indices.push_back(vertIndex + 101);
                 indices.push_back(vertIndex + 1);
+                indices.push_back(vertIndex);
+                indices.push_back(vertIndex + 100);
                 indices.push_back(vertIndex + 101);
                 indices.push_back(vertIndex);
-                indices.push_back(vertIndex + 101);
-                indices.push_back(vertIndex + 100);
             }
         }
     }
