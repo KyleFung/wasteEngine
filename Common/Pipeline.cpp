@@ -52,8 +52,14 @@ void Pipeline::updateCamMatrix()
     glm::mat4 camTran = glm::mat4(1.0f);
     glm::mat4 camRotn = glm::mat4(1.0f);
 
-    glm::vec3 W = glm::normalize(pCamera->mDir);
-    glm::vec3 V = glm::normalize(pCamera->mUp);
+    float yaw = pCamera->mYaw;
+    float pitch = pCamera->mPitch;
+
+    glm::vec3 initView = glm::vec3(0.0f, 0.0f, -1.0f);
+    glm::vec3 initUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    glm::vec3 W = glm::normalize(glm::rotateY(glm::rotateX(initView, degToRad(pitch)), degToRad(yaw)));
+    glm::vec3 V = glm::normalize(glm::rotateY(glm::rotateX(initUp, degToRad(pitch)), degToRad(yaw)));
     glm::vec3 U = glm::cross(W, V);
 
     //HARDCODED BUT FUNCTIONAL **CHANGE LATER**
@@ -64,23 +70,23 @@ void Pipeline::updateCamMatrix()
 
     //UVW transformation
     camRotn[0][0] = U.x;
-    camRotn[1][0] = V.x;
-    camRotn[2][0] = W.x;
-    camRotn[3][0] = 0.0f;
-
-    camRotn[0][1] = U.y;
-    camRotn[1][1] = V.y;
-    camRotn[2][1] = W.y;
-    camRotn[3][1] = 0.0f;
-
-    camRotn[0][2] = U.z;
-    camRotn[1][2] = V.z;
-    camRotn[2][2] = W.z;
-    camRotn[3][2] = 0.0f;
-
+    camRotn[0][1] = V.x;
+    camRotn[0][2] = W.x;
     camRotn[0][3] = 0.0f;
+
+    camRotn[1][0] = U.y;
+    camRotn[1][1] = V.y;
+    camRotn[1][2] = W.y;
     camRotn[1][3] = 0.0f;
+
+    camRotn[2][0] = U.z;
+    camRotn[2][1] = V.z;
+    camRotn[2][2] = W.z;
     camRotn[2][3] = 0.0f;
+
+    camRotn[3][0] = 0.0f;
+    camRotn[3][1] = 0.0f;
+    camRotn[3][2] = 0.0f;
     camRotn[3][3] = 1.0f;
 
     cameraMatrix = camRotn * camTran;

@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
+#include <utils.h>
+
 class Camera
 {
   public:
@@ -13,8 +15,8 @@ class Camera
     bool onMouse(int x, int y);
 
     glm::vec3 mPos;
-    glm::vec3 mDir;
-    glm::vec3 mUp;
+    float mPitch;
+    float mYaw;
 
     int mWinWidth;
     int mWinHeight;

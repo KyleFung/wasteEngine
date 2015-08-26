@@ -23,3 +23,17 @@ bool ReadFile(const char* pFileName, std::string& outFile)
     }
     return ret;
 }
+
+float degToRad(float deg)
+{
+    return deg * 0.0174532925f;
+}
+
+float clamp(float value, float lower, float higher)
+{
+    if(value < lower)
+        return lower;
+    if(value > higher)
+        return higher;
+    return value;
+}

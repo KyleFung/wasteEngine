@@ -6,4 +6,7 @@
 
 bool ReadFile(const char* pFileName, std::string& outFile);
 
+//Math functions
+float degToRad(float deg);
+float clamp(float value, float lower, float higher);
 #endif

@@ -15,7 +15,7 @@
 #define WINDOW_WIDTH  640 
 #define WINDOW_HEIGHT 480
 
-GeneratedMesh mesh;
+LoadedMesh mesh;
 
 Camera* eye = NULL;
 Technique tech;
@@ -96,15 +96,12 @@ int main(int argc, char **argv)
 
     //Set up renderer
     eye = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT);
-    eye->mPos = glm::vec3(3.0f, 0.0f, 0.0f);
-    eye->mDir = glm::vec3(-1.0f, 0.0f, 0.0f);
-    eye->mUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    eye->mPos = glm::vec3(0.0f, 0.0f, 3.0f);
     pipeline.setCamera(eye);
 
     //Load scene
-    mesh = GeneratedMesh();
-    mesh.loadMeshFromFunction(func);
-    mesh.loadTexture("Assets/tile.png");
+    mesh = LoadedMesh();
+    mesh.loadSceneFromFiles("Assets/Dragon/Dargon posing.obj");
 
     //Start loop
     glutMainLoop();

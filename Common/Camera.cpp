@@ -6,8 +6,8 @@ Camera::Camera(int windowWidth, int windowHeight)
     int centerY = windowHeight / 2;
 
     mPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    mDir = glm::vec3(0.0f, 0.0f, 1.0f);
-    mUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    mPitch = 0.0f;
+    mYaw = 0.0f;
 
     mWinWidth = windowWidth;
     mWinHeight = windowHeight;
@@ -26,32 +26,32 @@ bool Camera::onKey(int key)
     {
         case GLUT_KEY_UP:
         {
-            mPos += (mDir * stepSize);
+            mPos.x -= stepSize * sin(degToRad(mYaw));
+            mPos.z -= stepSize * cos(degToRad(mYaw));
             ret = true;
         }
         break;
 
         case GLUT_KEY_DOWN:
         {
-            mPos -= (mDir * stepSize);
+            mPos.x += stepSize * sin(degToRad(mYaw));
+            mPos.z += stepSize * cos(degToRad(mYaw));
             ret = true;
         }
         break;
 
         case GLUT_KEY_LEFT:
         {
-            glm::vec3 l = glm::normalize(glm::cross(mUp, mDir));
-            l *= stepSize;
-            mPos += l;
+            mPos.x -= stepSize * sin(degToRad(mYaw + 90.0));
+            mPos.z -= stepSize * cos(degToRad(mYaw + 90.0));
             ret = true;
         }
         break;
 
         case GLUT_KEY_RIGHT:
         {
-            glm::vec3 r = glm::normalize(glm::cross(mDir, mUp));
-            r *= stepSize;
-            mPos += r;
+            mPos.x -= stepSize * sin(degToRad(mYaw - 90.0));
+            mPos.z -= stepSize * cos(degToRad(mYaw - 90.0));
             ret = true;
         }
         break;
@@ -62,18 +62,17 @@ bool Camera::onKey(int key)
 
 bool Camera::onMouse(int x, int y)
 {
-    //Spin the camera around the world up vector
+    //Increment the yaw of the camera
     int deltaX = mWinWidth / 2 - x;
-    deltaX *= 10;
     mMouseX = x;
-    mDir = glm::normalize(glm::rotate(mDir, deltaX / 100000.f, glm::vec3(0.0f, 1.0f, 0.0f)));
-    mUp = glm::normalize(glm::rotate(mUp, deltaX / 100000.f, glm::vec3(0.0f, 1.0f, 0.0f)));
+    mYaw += deltaX * 0.002f;
+    mYaw = fmod(mYaw, 360.0f);
 
+    //Increment the pitch of the camera
     int deltaY = mWinHeight / 2 - y;
-    deltaY *= 10;
     mMouseY = y;
-    mDir = glm::normalize(glm::rotate(mDir, deltaY / 100000.f, glm::vec3(1.0f, 0.0f, 0.0f)));
-    mUp = glm::normalize(glm::rotate(mUp, deltaY / 100000.f, glm::vec3(1.0f, 0.0f, 0.0f)));
+    mPitch += deltaY * 0.002f;
+    mPitch = clamp(mPitch, -90.0f, 90.0f);
 
     return true;
 }
