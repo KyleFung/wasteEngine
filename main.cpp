@@ -15,7 +15,9 @@
 #define WINDOW_WIDTH  640 
 #define WINDOW_HEIGHT 480
 
-LoadedMesh mesh;
+LoadedMesh dragonMesh;
+Entity dragon;
+Entity dragon2;
 
 Camera* eye = NULL;
 Technique tech;
@@ -33,10 +35,10 @@ void Render()
     tech.useShader(&shader);
     tech.usePipeline(&pipeline);
     tech.bind();
-    tech.setMvpUniform();
+    tech.renderEntity(&dragon);
+    tech.renderEntity(&dragon2);
 
     //Render call
-    mesh.render();
     glutSwapBuffers();
 
     //Reset controls
@@ -100,8 +102,12 @@ int main(int argc, char **argv)
     pipeline.setCamera(eye);
 
     //Load scene
-    mesh = LoadedMesh();
-    mesh.loadSceneFromFiles("Assets/Dragon/Dargon posing.obj");
+    dragonMesh = LoadedMesh();
+    dragonMesh.loadSceneFromFiles("Assets/Dragon/Dargon posing.obj");
+
+    dragon = Entity(&dragonMesh);
+    dragon2 = Entity(&dragonMesh);
+    dragon2.updateRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 
     //Start loop
     glutMainLoop();

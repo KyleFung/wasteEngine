@@ -5,6 +5,7 @@
 
 #include <Shader.h>
 #include <Pipeline.h>
+#include <Entity.h>
 
 class Technique
 {
@@ -17,6 +18,9 @@ class Technique
     void usePipeline(Pipeline *pipeline);
     void bind();
     void initShader();
+    void renderEntity(Entity *entity);
+
+  private:
     void setMvpUniform();
 };
 
