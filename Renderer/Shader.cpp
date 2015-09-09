@@ -1,8 +1,17 @@
 #include <Shader.h>
 
+Shader::Shader(std::string vs, std::string fs)
+{
+    mInited = false;
+    mVs = vs;
+    mFs = fs;
+}
+
 Shader::Shader()
 {
     mInited = false;
+    mVs = "";
+    mFs = "";
 }
 
 //Helper function to compile and link shader programs
@@ -19,10 +28,10 @@ void Shader::init()
     //Load shaders as strings
     std::string vs;
     std::string fs;
-    if (!ReadFile("Assets/shader.vs", vs))
+    if (!ReadFile(mVs.c_str(), vs))
         exit(1);
 
-    if (!ReadFile("Assets/shader.fs", fs))
+    if (!ReadFile(mFs.c_str(), fs))
         exit(1);
 
     //Compile shaders and add them to the program
@@ -104,10 +113,10 @@ bool Shader::initUniforms()
     for(int i = 0; i < 8; i++)
     {
         std::string index = numToStr(i);
-        gLightDirs[i] = glGetUniformLocation(mProgram,
-                                             ("gLights[" + index + "].dir").c_str());
-        gLightCols[i] = glGetUniformLocation(mProgram,
-                                             ("gLights[" + index + "].col").c_str());
+        gDrLtDirs[i] = glGetUniformLocation(mProgram,
+                                             ("gDirLights[" + index + "].dir").c_str());
+        gDrLtCols[i] = glGetUniformLocation(mProgram,
+                                             ("gDirLights[" + index + "].col").c_str());
     }
     return true;
 }
@@ -118,12 +127,12 @@ void Shader::updateMVP(glm::mat4 mvp)
     glUniformMatrix4fv(gMVP, 1, false, &mvp[0][0]);
 }
 
-void Shader::updateLights(std::vector<Light> lights)
+void Shader::updateLights(std::vector<Light::DirLight> dirLights)
 {
     glUseProgram(mProgram);
-    for(int i = 0; i < std::min((int)lights.size(), 8); i++)
+    for(int i = 0; i < std::min((int)dirLights.size(), 8); i++)
     {
-        glUniform3fv(gLightDirs[i], 1, &lights[i].mDir[0]);
-        glUniform3fv(gLightCols[i], 1, &lights[i].mCol[0]);
+        glUniform3fv(gDrLtDirs[i], 1, &dirLights[i].mDir[0]);
+        glUniform3fv(gDrLtCols[i], 1, &dirLights[i].mCol[0]);
     }
 }

@@ -1,13 +1,15 @@
+#ifndef LIGHT_H
+#define LIGHT_H
+
 #include <glm/glm.hpp>
 
-struct Light
+namespace Light
 {
-    enum type
+    struct DirLight
     {
-        point,
-        directional
+        glm::vec3 mDir;
+        glm::vec3 mCol;
     };
-    type mType;
-    glm::vec3 mDir;
-    glm::vec3 mCol;
 };
+
+#endif

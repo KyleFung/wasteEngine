@@ -1,8 +1,8 @@
 #include <Technique.h>
 
-void Technique::useShader(Shader *shader)
+Technique::Technique(std::string vs, std::string fs)
 {
-    mShader = shader;
+    mShader = Shader(vs, fs);
 }
 
 void Technique::usePipeline(Pipeline *pipeline)
@@ -12,15 +12,9 @@ void Technique::usePipeline(Pipeline *pipeline)
 
 void Technique::bind()
 {
-    mShader->bind();
-}
-
-void Technique::initShader()
-{
-    if(!mShader->mInited)
-    {
-        mShader->init();
-    }
+    if(mShader.mInited != true)
+        mShader.init();
+    mShader.bind();
 }
 
 void Technique::renderEntity(Entity *entity)
@@ -37,5 +31,10 @@ void Technique::renderEntity(Entity *entity)
 void Technique::setMvpUniform()
 {
     mPipeline->project(60.0f);
-    mShader->updateMVP(mPipeline->getTrans());
+    mShader.updateMVP(mPipeline->getTrans());
+}
+
+void Technique::updateLights(std::vector<Light::DirLight> dirLights)
+{
+    mShader.updateLights(dirLights);
 }

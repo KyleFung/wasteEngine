@@ -17,12 +17,11 @@
 
 LoadedMesh dragonMesh;
 Entity dragon;
-std::vector<Light> lights;
+std::vector<Light::DirLight> dirLights;
 
 Camera* eye = NULL;
-Technique tech;
+Technique tech = Technique("Assets/shader.vs", "Assets/shader.fs");
 Pipeline pipeline;
-Shader shader;
 
 void Render()
 {
@@ -31,7 +30,7 @@ void Render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Render setup
-    shader.updateLights(lights);
+    tech.updateLights(dirLights);
     tech.renderEntity(&dragon);
 
     //Render call
@@ -93,17 +92,15 @@ int main(int argc, char **argv)
     pipeline.setCamera(eye);
 
     //Set up the technique
-    shader.init();
-    tech.useShader(&shader);
     tech.usePipeline(&pipeline);
     tech.bind();
 
     //Set up light vector
-    Light dirLight;
+    Light::DirLight dirLight;
     dirLight.mDir = glm::vec3(1.0f, 1.0f, 1.0f);
     dirLight.mCol = glm::vec3(1.0f, 1.0f, 1.0f);
-    lights.resize(0);
-    lights.push_back(dirLight);
+    dirLights.resize(0);
+    dirLights.push_back(dirLight);
 
     //Load scene
     dragonMesh = LoadedMesh();
