@@ -100,10 +100,30 @@ bool Shader::initUniforms()
     gMVP = glGetUniformLocation(mProgram, "gMVP");
     gSamplerLocation = glGetUniformLocation(mProgram, "gSampler");
 
+    //Get light locations
+    for(int i = 0; i < 8; i++)
+    {
+        std::string index = numToStr(i);
+        gLightDirs[i] = glGetUniformLocation(mProgram,
+                                             ("gLights[" + index + "].dir").c_str());
+        gLightCols[i] = glGetUniformLocation(mProgram,
+                                             ("gLights[" + index + "].col").c_str());
+    }
     return true;
 }
 
 void Shader::updateMVP(glm::mat4 mvp)
 {
+    glUseProgram(mProgram);
     glUniformMatrix4fv(gMVP, 1, false, &mvp[0][0]);
+}
+
+void Shader::updateLights(std::vector<Light> lights)
+{
+    glUseProgram(mProgram);
+    for(int i = 0; i < std::min((int)lights.size(), 8); i++)
+    {
+        glUniform3fv(gLightDirs[i], 1, &lights[i].mDir[0]);
+        glUniform3fv(gLightCols[i], 1, &lights[i].mCol[0]);
+    }
 }

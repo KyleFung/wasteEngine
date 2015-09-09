@@ -7,10 +7,12 @@
 #include <string>
 #include <iostream>
 #include <cstdio>
+#include <vector>
 
 #include <utils.h>
 #include <Camera.h>
 #include <Pipeline.h>
+#include <Light.h>
 
 class Shader
 {
@@ -23,6 +25,7 @@ class Shader
     void bind();
 
     void updateMVP(glm::mat4 mvp);
+    void updateLights(std::vector<Light> lights);
 
   private:
     void addShader(const char* pShaderText, GLenum ShaderType);
@@ -33,6 +36,8 @@ class Shader
 
     GLuint gMVP;
     GLuint gSamplerLocation;
+    GLuint gLightDirs[8];
+    GLuint gLightCols[8];
 };
 
 #endif

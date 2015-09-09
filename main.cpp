@@ -17,7 +17,7 @@
 
 LoadedMesh dragonMesh;
 Entity dragon;
-Entity dragon2;
+std::vector<Light> lights;
 
 Camera* eye = NULL;
 Technique tech;
@@ -31,12 +31,8 @@ void Render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Render setup
-    shader.init();
-    tech.useShader(&shader);
-    tech.usePipeline(&pipeline);
-    tech.bind();
+    shader.updateLights(lights);
     tech.renderEntity(&dragon);
-    tech.renderEntity(&dragon2);
 
     //Render call
     glutSwapBuffers();
@@ -62,11 +58,6 @@ static void specialHandler(unsigned char key, int x, int y)
         case 'q':
            exit(0);
     }
-}
-
-float func(float x, float y)
-{
-    return sin(x + y);
 }
 
 int main(int argc, char **argv)
@@ -101,13 +92,23 @@ int main(int argc, char **argv)
     eye->mPos = glm::vec3(0.0f, 0.0f, 3.0f);
     pipeline.setCamera(eye);
 
+    //Set up the technique
+    shader.init();
+    tech.useShader(&shader);
+    tech.usePipeline(&pipeline);
+    tech.bind();
+
+    //Set up light vector
+    Light dirLight;
+    dirLight.mDir = glm::vec3(1.0f, 1.0f, 1.0f);
+    dirLight.mCol = glm::vec3(1.0f, 1.0f, 1.0f);
+    lights.resize(0);
+    lights.push_back(dirLight);
+
     //Load scene
     dragonMesh = LoadedMesh();
     dragonMesh.loadSceneFromFiles("Assets/Dragon/Dargon posing.obj");
-
     dragon = Entity(&dragonMesh);
-    dragon2 = Entity(&dragonMesh);
-    dragon2.updateRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 
     //Start loop
     glutMainLoop();

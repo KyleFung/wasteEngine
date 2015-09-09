@@ -24,6 +24,13 @@ bool ReadFile(const char* pFileName, std::string& outFile)
     return ret;
 }
 
+std::string numToStr(int n)
+{
+    std::stringstream ss;
+    ss << n;
+    return ss.str();
+}
+
 float degToRad(float deg)
 {
     return deg * 0.0174532925f;
