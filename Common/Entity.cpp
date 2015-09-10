@@ -8,11 +8,6 @@ Entity::Entity(Mesh *mesh, glm::vec3 pos, glm::vec3 rot, glm::vec3 scl)
     mScl = scl;
 }
 
-Entity::Entity()
-{
-
-}
-
 void Entity::render()
 {
     if (mMesh == NULL)

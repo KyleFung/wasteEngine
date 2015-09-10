@@ -15,7 +15,6 @@
 class LoadedMesh: public Mesh
 {
   public:
-    LoadedMesh();
     LoadedMesh(std::string fileName);
 
     virtual void render();

@@ -1,10 +1,5 @@
 #include <LoadedMesh.h>
 
-LoadedMesh::LoadedMesh()
-{
-
-}
-
 LoadedMesh::LoadedMesh(const std::string fileName)
 {
     loadSceneFromFiles(fileName);

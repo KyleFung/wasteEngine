@@ -6,10 +6,11 @@
 #include <vector>
 #include <string>
 
-#include <Shader.h>
-#include <Pipeline.h>
 #include <Entity.h>
 #include <Light.h>
+#include <Pipeline.h>
+#include <Scene.h>
+#include <Shader.h>
 
 class Technique
 {
@@ -20,12 +21,13 @@ class Technique
   public:
     Technique(std::string vs, std::string fs);
     void usePipeline(Pipeline *pipeline);
-    void bind();
+    void renderScene(Scene *scene);
     void renderEntity(Entity *entity);
     void updateLights(std::vector<Light::DirLight> dirLights,
                       std::vector<Light::PntLight> pntLights);
   private:
     void setMvpUniform();
+    void bind();
 };
 
 #endif

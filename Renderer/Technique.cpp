@@ -17,9 +17,19 @@ void Technique::bind()
     mShader.bind();
 }
 
+void Technique::renderScene(Scene *scene)
+{
+    updateLights(*scene->getDirLights(), *scene->getPntLights());
+
+    std::vector<Entity> &entities = *scene->getEntities();
+    for(int i = 0;  i < entities.size(); i++)
+    {
+        renderEntity(&entities[i]);
+    }
+}
+
 void Technique::renderEntity(Entity *entity)
 {
-    //Set up MVP
     bind();
     mPipeline->translate(entity->mPos.x, entity->mPos.y, entity->mPos.z);
     mPipeline->rotate(entity->mRot.x, entity->mRot.y, entity->mRot.z);
