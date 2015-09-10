@@ -109,12 +109,10 @@ int main(int argc, char **argv)
     pntLights.push_back(light);
 
     //Load scene
-    dragonMesh = LoadedMesh();
-    dragonMesh.loadSceneFromFiles("Assets/Dragon/Dargon posing.obj");
+    dragonMesh = LoadedMesh("Assets/Dragon/Dargon posing.obj");
     dragon = Entity(&dragonMesh);
 
-    potMesh = LoadedMesh();
-    potMesh.loadSceneFromFiles("Assets/teapot.obj");
+    potMesh = LoadedMesh("Assets/teapot.obj");
     pot = Entity(&potMesh);
     pot.updateScale(glm::vec3(0.1f, 0.1f, 0.1f));
 

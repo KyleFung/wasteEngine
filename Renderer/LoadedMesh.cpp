@@ -1,5 +1,15 @@
 #include <LoadedMesh.h>
 
+LoadedMesh::LoadedMesh()
+{
+
+}
+
+LoadedMesh::LoadedMesh(const std::string fileName)
+{
+    loadSceneFromFiles(fileName);
+}
+
 bool LoadedMesh::loadSceneFromFiles(const std::string fileName)
 {
     Assimp::Importer importer;
