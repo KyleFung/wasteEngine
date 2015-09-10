@@ -117,6 +117,10 @@ bool Shader::initUniforms()
                                              ("gDirLights[" + index + "].dir").c_str());
         gDrLtCols[i] = glGetUniformLocation(mProgram,
                                              ("gDirLights[" + index + "].col").c_str());
+        gPtLtDirs[i] = glGetUniformLocation(mProgram,
+                                             ("gPntLights[" + index + "].pos").c_str());
+        gPtLtCols[i] = glGetUniformLocation(mProgram,
+                                             ("gPntLights[" + index + "].col").c_str());
     }
     return true;
 }
@@ -127,12 +131,18 @@ void Shader::updateMVP(glm::mat4 mvp)
     glUniformMatrix4fv(gMVP, 1, false, &mvp[0][0]);
 }
 
-void Shader::updateLights(std::vector<Light::DirLight> dirLights)
+void Shader::updateLights(std::vector<Light::DirLight> dirLights,
+                          std::vector<Light::PntLight> pntLights)
 {
     glUseProgram(mProgram);
     for(int i = 0; i < std::min((int)dirLights.size(), 8); i++)
     {
         glUniform3fv(gDrLtDirs[i], 1, &dirLights[i].mDir[0]);
         glUniform3fv(gDrLtCols[i], 1, &dirLights[i].mCol[0]);
+    }
+    for(int i = 0; i < std::min((int)pntLights.size(), 8); i++)
+    {
+        glUniform3fv(gPtLtDirs[i], 1, &pntLights[i].mPos[0]);
+        glUniform3fv(gPtLtCols[i], 1, &pntLights[i].mCol[0]);
     }
 }

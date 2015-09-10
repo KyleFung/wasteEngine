@@ -20,8 +20,10 @@ void Technique::bind()
 void Technique::renderEntity(Entity *entity)
 {
     //Set up MVP
+    bind();
     mPipeline->translate(entity->mPos.x, entity->mPos.y, entity->mPos.z);
     mPipeline->rotate(entity->mRot.x, entity->mRot.y, entity->mRot.z);
+    mPipeline->scale(entity->mScl.x, entity->mScl.y, entity->mScl.z);
     setMvpUniform();
 
     //Render
@@ -34,7 +36,8 @@ void Technique::setMvpUniform()
     mShader.updateMVP(mPipeline->getTrans());
 }
 
-void Technique::updateLights(std::vector<Light::DirLight> dirLights)
+void Technique::updateLights(std::vector<Light::DirLight> dirLights,
+                             std::vector<Light::PntLight> pntLights)
 {
-    mShader.updateLights(dirLights);
+    mShader.updateLights(dirLights, pntLights);
 }

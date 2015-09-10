@@ -10,6 +10,12 @@ namespace Light
         glm::vec3 mDir;
         glm::vec3 mCol;
     };
+
+    struct PntLight
+    {
+        glm::vec3 mPos;
+        glm::vec3 mCol;
+    };
 };
 
 #endif

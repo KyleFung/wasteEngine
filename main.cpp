@@ -15,12 +15,17 @@
 #define WINDOW_WIDTH  640 
 #define WINDOW_HEIGHT 480
 
+//Declare scene elements
 LoadedMesh dragonMesh;
 Entity dragon;
+LoadedMesh potMesh;
+Entity pot;
 std::vector<Light::DirLight> dirLights;
+std::vector<Light::PntLight> pntLights;
 
 Camera* eye = NULL;
 Technique tech = Technique("Assets/shader.vs", "Assets/shader.fs");
+Technique solid = Technique("Assets/shader.vs", "Assets/solid.fs");
 Pipeline pipeline;
 
 void Render()
@@ -30,10 +35,10 @@ void Render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Render setup
-    tech.updateLights(dirLights);
+    tech.updateLights(dirLights, pntLights);
     tech.renderEntity(&dragon);
+    solid.renderEntity(&pot);
 
-    //Render call
     glutSwapBuffers();
 
     //Reset controls
@@ -93,19 +98,25 @@ int main(int argc, char **argv)
 
     //Set up the technique
     tech.usePipeline(&pipeline);
-    tech.bind();
+    solid.usePipeline(&pipeline);
 
     //Set up light vector
-    Light::DirLight dirLight;
-    dirLight.mDir = glm::vec3(1.0f, 1.0f, 1.0f);
-    dirLight.mCol = glm::vec3(1.0f, 1.0f, 1.0f);
+    Light::PntLight light;
+    light.mPos = glm::vec3(1.0f, 0.0f, 0.0f);
+    light.mCol = glm::vec3(1.0f, 0.0f, 0.0f);
     dirLights.resize(0);
-    dirLights.push_back(dirLight);
+    pntLights.resize(0);
+    pntLights.push_back(light);
 
     //Load scene
     dragonMesh = LoadedMesh();
     dragonMesh.loadSceneFromFiles("Assets/Dragon/Dargon posing.obj");
     dragon = Entity(&dragonMesh);
+
+    potMesh = LoadedMesh();
+    potMesh.loadSceneFromFiles("Assets/teapot.obj");
+    pot = Entity(&potMesh);
+    pot.updateScale(glm::vec3(0.1f, 0.1f, 0.1f));
 
     //Start loop
     glutMainLoop();

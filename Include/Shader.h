@@ -26,7 +26,9 @@ class Shader
     void bind();
 
     void updateMVP(glm::mat4 mvp);
-    void updateLights(std::vector<Light::DirLight> dirLights);
+    void updateLights(std::vector<Light::DirLight> dirLights,
+                      std::vector<Light::PntLight> pntLights);
+
 
   private:
     void addShader(const char* pShaderText, GLenum ShaderType);
@@ -41,6 +43,8 @@ class Shader
     GLuint gSamplerLocation;
     GLuint gDrLtDirs[8];
     GLuint gDrLtCols[8];
+    GLuint gPtLtDirs[8];
+    GLuint gPtLtCols[8];
 };
 
 #endif

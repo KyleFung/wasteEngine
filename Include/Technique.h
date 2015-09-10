@@ -22,8 +22,8 @@ class Technique
     void usePipeline(Pipeline *pipeline);
     void bind();
     void renderEntity(Entity *entity);
-    void updateLights(std::vector<Light::DirLight> dirLights);
-
+    void updateLights(std::vector<Light::DirLight> dirLights,
+                      std::vector<Light::PntLight> pntLights);
   private:
     void setMvpUniform();
 };
